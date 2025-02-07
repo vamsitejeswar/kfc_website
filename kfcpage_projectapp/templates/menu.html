@@ -1,0 +1,982 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'kfcpage_style.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'kfcpage_images/favicon.webp' %}">
+    <script src="https://kit.fontawesome.com/085ed8226f.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>KFC | Menu Prices</title>
+    <style type="text/css">
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    
+    :root {
+      /* --first-color: #2e2e41; */
+      --second-color: #5b85ff;
+      --third-color: #434354;
+      --text-color: #fff;
+    
+      --box-shadow: 0 5px 25px rgb(2, 2, 2, 0.1);
+      --text-shadow: 0 5px 25px rgb(2, 2, 2, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background-color: var(--first-color);
+    }
+    
+    section {
+      position: relative;
+      margin: 0 80px;
+      transition: .5s ease;
+    }
+    
+    .main-container {
+      position: relative;
+    }
+    
+    /* ===== Tab navigation content ===== */
+    .tab-nav-bar {
+      position: relative;
+      margin: 15px 0px 20px 0px;
+    }
+    
+    .tab-navigation {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: fit-content;
+      margin: 0 auto;
+    }
+    
+    .tab-menu {
+      color: var(--text-color);
+      list-style: none;
+      background-color: var(--third-color);
+      max-width: 800px;
+      padding: 10px;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--third-color);
+      border-radius: 50px;
+      box-shadow: var(--box-shadow);
+      scroll-behavior: smooth;
+    
+      user-select: none;
+      overflow-x: auto;
+    }
+    
+    .tab-menu.dragging {
+      scroll-behavior: unset;
+      cursor: grab;
+    }
+    
+    .tab-menu::-webkit-scrollbar {
+      display: none;
+    }
+    .tab-nav-bar {
+    position: sticky;
+    top: 80px;
+    overflow: hidden;
+    background-color: white;
+    z-index: 99;
+    }
+    
+    .tab-btn {
+      display: inline-block;
+      color: var(--text-color);
+      font-size: 1em;
+      font-weight: 400;
+      margin: 0 2px;
+      padding: 4px 7px;
+      border-radius: 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color .3s ease;
+    }
+    
+    .tab-menu.dragging .tab-btn {
+      pointer-events: none;
+    }
+    
+    .tab-btn:hover {
+      background-color: var(--first-color);
+    }
+    
+    .tab-btn.active {
+      background-color: var(--second-color);
+    }
+    
+    .left-btn,
+    .right-btn {
+      position: absolute;
+      color: var(--text-color);
+      font-size: 1.8em;
+      padding: 10px;
+      cursor: pointer;
+    }
+    
+    .left-btn {
+      left: 0;
+      background: linear-gradient(to left, transparent, var(--first-color) 80%);
+      border-top-left-radius: 30px;
+      border-bottom-left-radius: 30px;
+      display: none;
+    }
+    
+    .right-btn {
+      right: 0;
+      background: linear-gradient(to right, transparent, var(--first-color) 80%);
+      border-top-right-radius: 30px;
+      border-bottom-right-radius: 30px;
+    }
+    
+
+    /* ===== Tab content ===== */
+    .tab-content {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    
+    .tab {
+      /* position: absolute; */
+      /* top: 0;
+      right: auto;
+      bottom: 0;
+      left: auto;
+      max-width: 1100px;
+      padding: 15px 50px; */
+      opacity: 0;
+    
+      /* transform: translateX(25px); */
+      content-visibility: hidden;
+    }
+    
+    .tab.active {
+      transform: translateX(0);
+      content-visibility: visible;
+      opacity: 1;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    #dummykfcmenu small{
+    font-size: small;
+    }
+
+    #dummykfcmenu .btn{
+      width: 40%;
+      margin: 10px;
+    }
+
+    #dummykfcmenu .card{
+    margin-top: 23px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+    }
+    #dummykfcmenu .card:hover{
+        transition: transform .3s;
+        transform: scale(1.02);
+    }
+
+    #dummykfcmenu .card img{
+      padding: 10px;
+    }
+
+    /* ===== Media queries (max-width: 1050px;) ===== */
+    @media screen and (max-width: 1050px) {
+      section {
+        margin: 0 0;
+      }
+    
+    }
+    </style>
+</head>
+<body>
+    <button onclick="topfunction()" id="mybtn" title="go to top">^</button>
+    <!-- navbar main-->
+    <nav class="navbar navbar-expand-lg sticky-top" id="mainnav">
+        <div class="container-fluid" id="mainnavwidth">
+          <a class="navbar-brand" href="/"><img src="{% static 'kfcpage_images/kfcLogo.svg' %}" class="vibrate-effect"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link ms-3 active" href="menu/">Menu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link ms-3" href="#">Deals</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link mt-3" href="signin/"><i class="fa-solid fa-user"></i> <b>Signin</b></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link mt-3" href="#"><b>&#8377; 0</b></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><img src="{% static 'kfcpage_images/bucket_cart_icon.svg' %}" class="vibrate-effect" width="55px" height="55px"></a>
+                </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <!-- navbar dummy -->
+    <nav class="navbar bg-body-tertiary sticky-top" id="dummynav">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><img src="{% static 'kfcpage_images/bucket_cart_icon.svg' %}"  width="55px" height="55px" class="vibrate-effect"></a>
+          <a class="navbar-brand" href="index.html"><img src="{% static 'kfcpage_images/kfcLogo.svg' %}" class="vibrate-effect"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LET'S GET COOKIN'</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-start flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="signin.html"><i class="fa-solid fa-user"></i> <b>Signin</b></a>
+                </li>
+                <li class="nav-item" id="amenu">
+                  <a class="nav-link" href="menu.html">
+                    <label>Menu</label>
+                    <img class="float-end" src="{% static 'kfcpage_images/menuimg.jpg' %}" width="100px" height="70px">
+                  </a>
+                </li><hr>
+                <li class="nav-item" id="amenu">
+                    <a class="nav-link" href="#">
+                      <label>deals</label>
+                      <img class="float-end" src="{% static 'kfcpage_images/dealsimg.jpg' %}" width="100px" height="70px">
+                    </a>
+                </li><hr>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Get Help</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">KFC Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pravicy Policy</a>
+                </li>
+              </ul>
+              <form class="d-flex mt-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </nav>
+    <!-- order -->
+    <div class="order text-center p-3">
+      <label>LET'S ORDER FOR DELIVERY, PICK UP, OR DINE-IN</label>
+      <button class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">Start Order</button>
+    <!-- model -->
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Start Your Order</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-tertiary">
+              <div>
+                  <h3 class="mt-4">How would you like to receive your order?</h3>
+                  <button class="btn btn-danger mt-4" style="width: 80%;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Delivery</button><br>
+                  <button class="btn btn-danger mt-4" style="width: 80%;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Pickup</button><br>
+                  <button class="btn btn-danger mt-4" style="width: 80%;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Dineup</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalToggleLabel2">Delivery Address</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row p-3">
+                <div class="col-7">Already a member? <a href="signin/">Sign in</a></div>
+                <div class="col-5"><a href="#"><i class="fa-solid fa-location-arrow"></i> use my location</a></div>
+              </div>
+              <div class="row p-3">
+                <div class="col-9"><input class="btn border-dark" type="text" style="width: 100%;" placeholder=" Search for area, street name..."></div>
+                <div class="col-3"><button class="btn border-dark">CONFIRM</button></div>
+              </div>
+              <hr>
+              <div class="map p-3">
+                <div>Please enter address</div>
+                <div><a href="#">map</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- model ends -->
+    <div class="kfcmenu mx-auto">
+        <div class="row">
+            <div class="col-3">
+              <div id="list-example" class="list-group">
+                <div class="scrollspy-link">
+                  <img src="{% static 'kfcpage_images/Stripes_Small_OffersIcon.87fc6256.svg' %}" width="55px" height="55px">
+                  <h2 class="p-3"><b>KFC MENU</b></h2>
+                <a class="list-group-item list-group-item-action" href="#list-item-1">INTERNATIONAL BURGER FEST</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-2">MATCH DAY COMBOS</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-3">VALUE LUNCH SPECIALS</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-4">BOX MEALS</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-5">BURGERS</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-6">CHICKEN BUCKETS</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-7">RICE BOWLZ</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-8">SNACKS</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-9">
+                <form class="d-flex pt-4" role="search">
+                    <input class="btn border-dark" type="search" placeholder="Search our menu" aria-label="Search">
+                    <button class="btn btn-outline-success" type="smallmit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+                <hr>
+              <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
+                <!-- list-item-1 -->
+                <div class="container-fluid bg-body-tertiary" id="list-item-1">
+                    <h3 class="p-4"><b>INTERNATIONAL BURGER FEST</b></h3>
+                <div class="row justify-content-center">
+                    {%for x in my_orders1%}
+                      <div class="col-5">
+                        <a href="orders1/{{x.id}}">
+                        <div class="card me-3">
+                          <img src="{% static 'kfcpage_images/1scb.jpg' %}" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">{{x.order_name}}</h5>
+                            <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}}</small><br>
+                            <b class="card-text">&#8377; {{x.order_price}}</b><br>
+                            <p class="card-text">{{x.order_details}}</p><br>
+                            <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                          </div>
+                        </div>
+                        </a>
+                      </div>
+                    {%endfor%}
+                </div>
+                </div>
+                <!-- list-item-2 -->
+                <div class="container-fluid pt-4" id="list-item-2">
+                    <h3 class="p-3"><b>MATCH DAY COMBOS</b></h3>
+                    <div class="row">
+                        {%for x in my_orders2%}
+                          <div class="col-4">
+                          <a href="orders2/{{x.id}}">
+                          <div class="card">
+                            <img src="{% static 'kfcpage_images/2scm1.jpg' %}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">{{x.order_name}}</h5>
+                              <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}}</small><br>
+                              <b class="card-text">&#8377;{{x.order_price}}</b><br>
+                              <p class="card-text">{{x.order_details}}</p><br>
+                              <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                            </div>
+                          </div>
+                          </a>
+                          </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                <!-- list-item-3 -->
+                <div class="container-fluid pt-4" id="list-item-3">
+                    <h3 class="p-4"><b>VALUE LUNCH SPECIALS</b></h3>
+                    <div class="row">
+                      {%for x in my_orders3%}
+                        <div class="col-4">
+                          <a href="orders3/{{x.id}}">
+                          <div class="card">
+                            <img src="{% static 'kfcpage_images/3scv1.jpg' %}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">{{x.order_name}}</h5>
+                              <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                              <b class="card-text"> &#8377;{{x.order_price}}</b><br>
+                              <p class="card-text">{{x.order_details}}</p><br>
+                              <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                            </div>
+                          </div>
+                          </a>
+                        </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                <!-- list-item-4 -->
+                 <div class="container-fluid pt-4" id="list-item-4">
+                  <h3 class="p-3"><b>BOX MEAL</b></h3>
+                    <div class="row">
+                      {%for x in my_orders4%}
+                        <div class="col-4">
+                          <a href="orders4/{{x.id}}">
+                          <div class="card">
+                            <img src="{% static 'kfcpage_images/4scb1.jpg' %}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">{{x.order_name}}</h5>
+                              <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}}</small><br>
+                              <b class="card-text"> &#8377;{{x.order_price}}</b><br>
+                              <p class="card-text">{{x.order_details}}</p><br>
+                              <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                            </div>
+                          </div>
+                          </a>
+                        </div>
+                      {%endfor%}
+                    </div>
+                 </div>
+                <!-- list-item-5 -->
+                <div class="container-fluid pt-4" id="list-item-5">
+                  <h3 class="p-3"><b>BURGERS</b></h3>
+                    <div class="row">
+                        {%for x in my_orders5%}
+                          <div class="col-4">
+                            <a href="orders5/{{x.id}}">
+                            <div class="card">
+                              <img src="{% static 'kfcpage_images/5scb1.jpg' %}" class="card-img-top" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title">{{x.order_name}}</h5>
+                                <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}}</small><br>
+                                <b class="card-text"> &#8377;{{x.order_price}}</b><br>
+                                <p class="card-text">{{x.order_details}}</p><br>
+                                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                              </div>
+                            </div>
+                            </a>
+                          </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                <!-- list-item-6 -->
+                <div class="container-fluid pt-4" id="list-item-6">
+                  <h3 class="p-3"><b>CHICKEN BUCKETS</b></h3>
+                    <div class="row">
+                          {%for x in my_orders6%}
+                            <div class="col-4">
+                            <a href="orders6/{{x.id}}">
+                            <div class="card">
+                              <img src="{% static 'kfcpage_images/6scc1.jpg' %}" class="card-img-top" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title">{{x.order_name}}</h5>
+                                <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}}</small><br>
+                                <b class="card-text">&#8377; <strike>{{x.order_actualprice}}</strike> &#8377;{{x.order_price}}</b><br>
+                                <p class="card-text">{{x.order_details}}</p><br>
+                                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                              </div>
+                            </div>
+                            </a>
+                            </div>
+                          {%endfor%}
+                    </div>
+                </div>
+                <!-- list-item-7 -->
+                <div class="container-fluid pt-4" id="list-item-7">
+                  <h3 class="p-3"><b>RICE BOWLZ</b></h3>
+                    <div class="row">
+                        {%for x in my_orders7%}
+                          <div class="col-4">
+                            <a href="orders7/{{x.id}}">
+                            <div class="card">
+                              <img src="{% static 'kfcpage_images/7scr1.jpg' %}" class="card-img-top" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title">{{x.order_name}}</h5>
+                                <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}}</small><br>
+                                <b class="card-text"> &#8377;{{x.order_price}}</b><br>
+                                <p class="card-text">{{x.order_details}}</p><br>
+                                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                              </div>
+                            </div>
+                            </a>
+                          </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                <!-- list-item-8 -->
+                <div class="container-fluid pt-4" id="list-item-8">
+                  <h3 class="p-3"><b>SNACKS</b></h3>
+                    <div class="row mb-5">
+                        {%for x in my_orders8%}
+                          <div class="col-4">
+                            <a href="orders8/{{x.id}}">
+                            <div class="card">
+                              <img src="{% static 'kfcpage_images/8scs1.jpg' %}" class="card-img-top" alt="...">
+                              <div class="card-body">
+                                <h5 class="card-title">{{x.order_name}}</h5>
+                                <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                                <b class="card-text"> &#8377;{{x.order_price}}</b><br>
+                                <p class="card-text">{{x.order_details}}</p><br>
+                                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+                              </div>
+                            </div>
+                            </a>
+                          </div>
+                        {%endfor%}
+                    </div>
+                </div>
+                </div>
+            </div>
+          </div>
+    </div>
+    <!-- menu ends -->
+    <!-- menu for mobile screen -->
+    <div class="container-fluid" id="dummykfcmenu">
+      <section class="main-container">
+        <div class="tab-nav-bar">
+          <div class="tab-navigation">
+    
+            <ion-icon class="left-btn" name="chevron-back-outline"></ion-icon>
+            <ion-icon class="right-btn" name="chevron-forward-outline"></ion-icon>
+    
+            <ul class="tab-menu">
+              <li class="tab-btn active"><small>INTERNATIONAL BURGER FEST</small></li>
+              <li class="tab-btn"><small>MATCH DAY COMBOS</small></li>
+              <li class="tab-btn"><small>VALUE LUNCH SPECIALS</small></li>
+              <li class="tab-btn"><small>BOX MEALS</small></li>
+              <li class="tab-btn"><small>BURGERS</small></li>
+              <li class="tab-btn"><small>CHICKEN BUCKETS</small></li>
+              <li class="tab-btn"><small>RICE BOWLZ</small></li>
+              <li class="tab-btn"><small>SNACKS</small></li>
+            </ul>
+          </div>
+        </div>
+    
+        <div class="tab-content">
+          <!-- item1 -->
+          <div class="tab active">
+          <h5 class="p-3"><b>INTERNATIONAL BURGER FEST</b></h5>
+            {%for x in my_orders1%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders1/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/1scb.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item2 -->
+          <div class="tab">
+          <h5 class="p-3"><b>MATCH DAY COMBOS</b></h5>
+            {%for x in my_orders2%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders2/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/2scm1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item3 -->
+          <div class="tab">
+            <h5 class="p-3"><b>VALUE LUNCH SPECIALS</b></h5>
+            {%for x in my_orders3%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders3/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/3scv1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item4 -->
+          <div class="tab">
+            <h5 class="p-3"><b>BOX MEALS</b></h5>
+            {%for x in my_orders4%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders4/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/4scb1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item5 -->
+          <div class="tab">
+            <h5 class="p-3"><b>BURGERS</b></h5>
+            {%for x in my_orders5%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders5/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/5scb1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item6 -->
+          <div class="tab">
+            <h5 class="p-3"><b>{{x.order_name}}</b></h5>
+            {%for x in my_orders6%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders6/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text">&#8377; <strike>{{x.order_actualprice}}</strike> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/6scc1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item7 -->
+          <div class="tab">
+            <h5 class="p-3"><b>{{x.order_name}}</b></h5>
+            {%for x in my_orders7%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders7/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/7scr1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+          <!-- item8 -->
+          <div class="tab">
+            <h5 class="p-3"><b>{{x.order_name}}</b></h5>
+            {%for x in my_orders8%}
+            <div class="card mb-3" >
+              <div class="row g-0">
+                <div class="col-8 col-md-8">
+                  <div class="card-body">
+                  <a href="orders8/{{x.id}}">
+                    <p class="card-title"><b>{{x.order_name}}</b></p>
+                  </a>
+                    <small class="card-text">{{x.order_details}}</small><br>
+                    <b class="card-text"> &#8377;{{x.order_price}}</b>
+                    <small class="card-text"><i class="fa-solid fa-caret-up"></i> {{x.order_item}} | {{x.order_quantity}}</small><br>
+                  </div>
+                </div>
+                <div class="col-4 col-md-4">
+                  <img src="{% static 'kfcpage_images/8scs1.jpg' %}" class="img-fluid rounded-start" alt="...">
+                </div>
+                <a href="#" class="btn btn-danger">Add to cart <i class="fa-solid fa-cart-shopping"></i></a>
+              </div>
+            </div>
+            {%endfor%}
+          </div>
+
+        </div>
+      </section>
+    </div>
+    <!-- mobile menu ends -->
+    <!-- footer -->
+    <div class="container-fluid" id="footerbackground">
+        <div class="footer mx-auto">
+            <div class="row pt-5 mb-5" id="mainfooter">
+              <hr>
+              <div class="col-2">
+                <img src="{% static 'kfcpage_images/KFC_Logo.svg' %}"><hr>
+                <a href="#"><i class="fa-solid fa-location-dot"></i> Find a KFC</a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>KFC India</b></p>
+                <a href="#"><small>About KFC</small></a><br>
+                <a href="#"><small>KFC Care</small></a><br>
+                <a href="#"><small>Careers</small></a><br>
+                <a href="#"><small>Our Golden Past</small></a><br>
+                <a href="#"><small>Responsible Disclosure</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>Legal</b></p>
+                <a href="#"><small>Terms and Conditions</small></a><br>
+                <a href="#"><small>Privacy Policy</small></a><br>
+                <a href="#"><small>Disclaimer</small></a><br>
+                <a href="#"><small>Caution Notice</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>KFC Food</b></p>
+                <a href="menu.html"><small>Menu</small></a><br>
+                <a href="#"><small>Order Lookup</small></a><br>
+                <a href="#"><small>Gift Card</small></a><br>
+                <a href="#"><small>Nutrition & Allergen</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>Support</b></p>
+                <a href="#"><small>Get Help</small></a><br>
+                <a href="#"><small>Contact Us</small></a><br>
+                <a href="#"><small>KFC Feedback</small></a><br>
+                <a href="#"><small>Privacy Policy</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <a href="#"><img src="{% static 'kfcpage_images/google_play.svg' %}" alt=""></a><br>
+                <hr>
+                <a href="#"><img src="{% static 'kfcpage_images/apple.svg' %}" alt=""></a>
+              </div>
+            </div>
+            <!-- footer dummy -->
+            <div id="dummyfooter">
+            <img src="{% static 'kfcpage_images/KFC_Logo.svg' %}">
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>KFC India</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>About KFC</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>KFC Care</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Careers</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Our Golden Past</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Responsible Disclosure</small></a></li>
+              </ul>
+            </div>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>Legal</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>Terms and Conditions</small></li>
+                <li><a class="dropdown-item" href="#"><small>Privacy Policy</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Disclaimer</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Caution Notice</small></a></li>
+              </ul>
+            </div>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>KFC Food</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>Menu</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Order Lookup</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Gift Card</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Nutrition & Allergen</small></a></li>
+              </ul>
+            </div>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>Support</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>Get Help</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Contact Us</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>KFC Feedback</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Privacy Policy</small></a></li>
+              </ul>
+            </div>
+            </div>
+            <!-- copyrights and socialmedia  -->
+            <div class="row mt-4">
+              <div class="col-6 mb-3"><small>Copyright © KFC Corporation 2024 All rights reserved</small></div>
+              <div class="col-6 mb-3"><label class="socialmedia">
+                <a href="#" class="p-2"><i class="fa-brands fa-square-facebook"></i></a>
+                <a href="#" class="p-2"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="p-2"><i class="fa-brands fa-square-twitter"></i></a>
+                </label>
+              </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- scriptlinks -->
+    <script src="{%static 'kfcpage_script.js'%}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+	<script>
+		// Javascript for tab navigation horizontal scroll buttons
+
+const btnLeft = document.querySelector('.left-btn');
+const btnRight = document.querySelector('.right-btn');
+const tabMenu = document.querySelector('.tab-menu');
+
+const iconVisibility = () => {
+	let scrollLeftValue = Math.ceil(tabMenu.scrollLeft);
+	console.log('1.', scrollLeftValue);
+
+	let scrollableWidth = tabMenu.scrollWidth - tabMenu.clientWidth;
+	console.log('2.', scrollableWidth);
+
+	btnLeft.style.display = scrollLeftValue > 0 ? 'block' : 'none';
+	btnRight.style.display = scrollableWidth > scrollLeftValue ? 'block' : 'none';
+};
+
+btnRight.addEventListener('click', () => {
+	tabMenu.scrollLeft += 150;
+	//iconVisibility();
+	setTimeout(() => iconVisibility(), 50);
+});
+btnLeft.addEventListener('click', () => {
+	tabMenu.scrollLeft -= 150;
+	//iconVisibility();
+	setTimeout(() => iconVisibility(), 50);
+});
+
+window.onload = function () {
+	btnRight.style.display =
+		tabMenu.scrollWidth > tabMenu.clientWidth
+			|| tabMenu.scrollWidth >= window.innerWidth
+			? 'block' : 'none';
+	btnLeft.style.display = tabMenu.scrollWidth >= window.innerWidth ? '' : 'none';
+};
+
+window.onresize = function () {
+	btnRight.style.display =
+		tabMenu.scrollWidth > tabMenu.clientWidth
+			|| tabMenu.scrollWidth >= window.innerWidth
+			? 'block' : 'none';
+	btnLeft.style.display = tabMenu.scrollWidth >= window.innerWidth ? '' : 'none';
+
+	let scrollLeftValue = Math.round(tabMenu.scrollLeft);
+	btnLeft.style.display = scrollLeftValue > 0 ? 'block' : 'none';
+};
+
+
+
+
+// Javascript to make the tab navigation draggable
+let activeDrag = false;
+
+tabMenu.addEventListener('mousemove', (drag) => {
+	if (!activeDrag) return;
+	tabMenu.scrollLeft -= drag.movementX;
+	iconVisibility();
+
+	tabMenu.classList.add('dragging');
+});
+
+document.addEventListener('mouseup', () => {
+	activeDrag = false;
+
+	tabMenu.classList.remove('dragging');
+});
+
+tabMenu.addEventListener('mousedown', () => {
+	activeDrag = true;
+});
+
+
+
+// Javascript to view tab contents on click tab buttons
+const tabs = document.querySelectorAll('.tab');
+const tabBtns = document.querySelectorAll('.tab-btn');
+
+const tab_Nav = function (tabBtnClick) {
+	tabBtns.forEach((tabBtn) => {
+		tabBtn.classList.remove('active');
+	});
+
+	tabs.forEach((tab) => {
+		tab.classList.remove('active');
+	});
+
+	tabBtns[tabBtnClick].classList.add('active');
+	tabs[tabBtnClick].classList.add('active');
+};
+
+tabBtns.forEach((tabBtn, i) => {
+	tabBtn.addEventListener('click', () => {
+		tab_Nav(i);
+	});
+});
+	</script>
+
+</body>
+</html>

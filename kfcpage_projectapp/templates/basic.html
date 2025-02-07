@@ -1,0 +1,269 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'kfcpage_style.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'kfcpage_images/favicon.webp' %}">
+    <script src="https://kit.fontawesome.com/085ed8226f.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>
+        {%block title%}
+        {%endblock%}
+    </title>
+</head>
+<body>
+    <button onclick="topfunction()" id="mybtn" title="go to top">^</button>
+    <div class="text-center p-2 border border-bottom-dark">
+        <label><i class="fa-solid fa-location-dot"></i> Allow location access for local store menu and promos</label>
+        <button class="btn btn-dark ms-4">set location</button>
+    </div>
+
+    <!-- navbar main-->
+    <nav class="navbar navbar-expand-lg sticky-top" id="mainnav">
+        <div class="container-fluid" id="mainnavwidth">
+          <a class="navbar-brand" href="/"><img src="{% static 'kfcpage_images/kfcLogo.svg' %}" class="vibrate-effect"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link ms-3" href="menu/">Menu</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link ms-3" href="#">Deals</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a class="nav-link mt-3" href="signin/"><i class="fa-solid fa-user"></i> <b>Signin</b></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link mt-3" href="#"><b>&#8377; 0</b></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><img src="{% static 'kfcpage_images/bucket_cart_icon.svg' %}" class="vibrate-effect" width="55px" height="55px"></a>
+                </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
+    <!-- navbar dummy -->
+    <nav class="navbar bg-body-tertiary" id="dummynav">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"><img src="{% static 'kfcpage_images/bucket_cart_icon.svg' %}"  width="55px" height="55px" class="vibrate-effect"></a>
+          <a class="navbar-brand" href="/"><img src="{% static 'kfcpage_images/kfcLogo.svg' %}" class="vibrate-effect"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LET'S GET COOKIN'</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-start flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link" href="signin/"><i class="fa-solid fa-user"></i> <b>Signin</b></a>
+                </li>
+                <li class="nav-item" id="amenu">
+                  <a class="nav-link" href="menu/">
+                    <label>Menu</label>
+                    <img class="float-end" src="{% static 'kfcpage_images/menuimg.jpg' %}" width="100px" height="70px">
+                  </a>
+                </li><hr>
+                <li class="nav-item" id="amenu">
+                    <a class="nav-link" href="#">
+                      <label>deals</label>
+                      <img class="float-end" src="{% static 'kfcpage_images/dealsimg.jpg' %}" width="100px" height="70px">
+                    </a>
+                </li><hr>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Get Help</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">KFC Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pravicy Policy</a>
+                </li>
+              </ul>
+              <form class="d-flex mt-3" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </nav>
+    <!-- order -->
+    <div class="order text-center p-3">
+      <label>LET'S ORDER FOR DELIVERY, PICK UP, OR DINE-IN</label>
+      <button class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">Start Order</button>
+    <!-- model -->
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Start Your Order</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-tertiary">
+              <div>
+                  <h3 class="mt-4">How would you like to receive your order?</h3>
+                  <button class="btn btn-danger mt-4" style="width: 80%;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Delivery</button><br>
+                  <button class="btn btn-danger mt-4" style="width: 80%;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Pickup</button><br>
+                  <button class="btn btn-danger mt-4" style="width: 80%;" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Dineup</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalToggleLabel2">Delivery Address</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row p-3">
+                <div class="col-7">Already a member? <a href="signin/">Sign in</a></div>
+                <div class="col-5"><a href="#"><i class="fa-solid fa-location-arrow"></i> use my location</a></div>
+              </div>
+              <div class="row p-3">
+                <div class="col-9"><input class="btn border-dark" type="text" style="width: 100%;" placeholder=" Search for area, street name..."></div>
+                <div class="col-3"><button class="btn border-dark">CONFIRM</button></div>
+              </div>
+              <hr>
+              <div class="map p-3">
+                <div>Please enter address</div>
+                <div><a href="#">map</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- model ends -->
+    <!-- individual order -->
+    {%block content%}
+    {%endblock%}
+    <!-- footer -->
+    <div class="container-fluid" id="footerbackground">
+        <div class="footer mx-auto">
+            <div class="row pt-5 mb-5" id="mainfooter">
+              <hr>
+              <div class="col-2">
+                <img src="{% static 'kfcpage_images/KFC_Logo.svg' %}"><hr>
+                <a href="#"><i class="fa-solid fa-location-dot"></i> Find a KFC</a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>KFC India</b></p>
+                <a href="#"><small>About KFC</small></a><br>
+                <a href="#"><small>KFC Care</small></a><br>
+                <a href="#"><small>Careers</small></a><br>
+                <a href="#"><small>Our Golden Past</small></a><br>
+                <a href="#"><small>Responsible Disclosure</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>Legal</b></p>
+                <a href="#"><small>Terms and Conditions</small></a><br>
+                <a href="#"><small>Privacy Policy</small></a><br>
+                <a href="#"><small>Disclaimer</small></a><br>
+                <a href="#"><small>Caution Notice</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>KFC Food</b></p>
+                <a href="menu.html"><small>Menu</small></a><br>
+                <a href="#"><small>Order Lookup</small></a><br>
+                <a href="#"><small>Gift Card</small></a><br>
+                <a href="#"><small>Nutrition & Allergen</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <p><b>Support</b></p>
+                <a href="#"><small>Get Help</small></a><br>
+                <a href="#"><small>Contact Us</small></a><br>
+                <a href="#"><small>KFC Feedback</small></a><br>
+                <a href="#"><small>Privacy Policy</small></a>
+              </div>
+              <div class="col-12 col-sm-12 col-md-12 col-lg-2">
+                <a href="#"><img src="{% static 'kfcpage_images/google_play.svg' %}" alt=""></a><br>
+                <hr>
+                <a href="#"><img src="{% static 'kfcpage_images/apple.svg' %}" alt=""></a>
+              </div>
+            </div>
+            <!-- footer dummy -->
+            <div id="dummyfooter">
+            <img src="{% static 'kfcpage_images/KFC_Logo.svg' %}">
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>KFC India</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>About KFC</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>KFC Care</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Careers</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Our Golden Past</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Responsible Disclosure</small></a></li>
+              </ul>
+            </div>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>Legal</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>Terms and Conditions</small></li>
+                <li><a class="dropdown-item" href="#"><small>Privacy Policy</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Disclaimer</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Caution Notice</small></a></li>
+              </ul>
+            </div>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>KFC Food</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>Menu</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Order Lookup</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Gift Card</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Nutrition & Allergen</small></a></li>
+              </ul>
+            </div>
+            <hr>
+            <div class="dropdown">
+              <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><b>Support</b></a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><small>Get Help</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Contact Us</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>KFC Feedback</small></a></li>
+                <li><a class="dropdown-item" href="#"><small>Privacy Policy</small></a></li>
+              </ul>
+            </div>
+            </div>
+            <!-- copyrights and socialmedia  -->
+            <div class="row mt-4">
+              <div class="col-6 mb-3"><small>Copyright © KFC Corporation 2024 All rights reserved</small></div>
+              <div class="col-6 mb-3"><label class="socialmedia">
+                <a href="#" class="p-2"><i class="fa-brands fa-square-facebook"></i></a>
+                <a href="#" class="p-2"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="p-2"><i class="fa-brands fa-square-twitter"></i></a>
+                </label>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- scriptlinks -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{%static 'kfcpage_script.js'%}"></script>
+</body>
+</html>

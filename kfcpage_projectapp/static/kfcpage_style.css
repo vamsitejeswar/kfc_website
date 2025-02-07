@@ -1,0 +1,222 @@
+/* mediascreen */
+/* mediascreen for mobile */
+@media screen and (max-width:500px) {
+    /* index page */
+    #mainnav{display: none;}
+    .mainimg img{
+        height: 200px;
+    }
+    #categories{
+        width: 100% !important;
+    }
+    #categories .card{margin: 10px;}
+    #rc{margin: 0px !important;}
+    .offers{
+        width: 100% !important;
+    }
+    .offers .card{
+        width: 100% !important;
+        height: 395px;
+    }
+    .offers .btn{margin: 0px !important;}
+    #mainfooter{display: none;}
+    .footer{width: 100% !important;}
+    /* menu page */
+    .kfcmenu {
+        display: none;
+    }
+    #dummykfcmenu{
+        width: 95%;
+    }
+    /* login page */
+    .login{
+        width: 60% !important;
+    }
+}
+/* mediascreen for tab */
+@media screen and (min-width:501px) and (max-width:1000px) {
+    /* index page */
+    #mainnav{display: none;}
+    .mainimg img{
+        height: 250px;
+    }
+    #categories{
+        width: 90% !important;
+    }
+    #categories .card{margin: 10px;}
+    #rc{margin: 0px !important;}
+    .offers .card{
+        width: 100% !important;
+        height: 395px;
+        margin: 10px;
+    }
+    .offers .btn{margin: 0px !important;}
+    #mainfooter{display: none;}
+    /* menu page */
+    .kfcmenu {
+        display: none;
+    }
+    #dummykfcmenu{
+        width: 85%;
+    }
+    /* login page */
+    .login{
+        width: 50% !important;
+    }
+}
+/* mediascreen for pc */
+@media screen and (min-width:1001px) {
+    /* index page */
+    .offers .card{
+        margin: 10px;
+    }
+    #dummynav{display: none;}
+    #dummyfooter{display: none;}
+    /* menu page */
+    #dummykfcmenu{
+        display: none;
+    }
+}
+/* scrolltop */
+#mybtn{
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 1;
+    border: none;
+    outline: none;
+    background-color: rgb(243, 59, 59);
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 40%;
+}
+#mybtn:hover{background-color: #555;}
+/* index page */
+a{text-decoration: none !important;}
+#mainnav{
+    background-color: white;
+    z-index: 99 !important;
+}
+@keyframes vibrate {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-3px); }
+    50% { transform: translateY(3px); }
+    75% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+.vibrate-effect {
+    display: inline-block;
+    animation: none;
+    transition: transform 0.3s ease;
+}
+.vibrate-effect:hover {
+    animation: vibrate 1s infinite;
+}
+#mainnavwidth{
+    width: 80%;
+}
+.navbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0;
+}
+#amenu{
+    background-color: lightgrey;
+}
+.order{
+    background-color: black;
+    color: white;
+}
+#startorder{
+    color: black;
+}
+#exampleModalToggle{color: black;}
+#exampleModalToggle2{color: black;}
+.map{
+    display: flex;
+    justify-content: space-between;
+}
+#categories{width: 80%;}
+#categories .card:hover{
+    transition: transform .3s;
+    transform: scale(1.02);
+}
+#offersbackground{
+    background-color: black;
+    color: white;
+}
+.offers{width: 80%;}
+.offers .card-text{
+    height: 80px;
+}
+#footerbackground{
+    background-color: black;
+    position: sticky;
+}
+.footer{
+    width: 80%;
+    color: white;
+}
+.footer a{
+    color: white;
+}
+#viewalldetails{
+    display: flex;
+    justify-content: end;
+}
+.socialmedia{
+    display: flex;
+    justify-content: end;
+}
+.footer li a{
+    color: black;
+}
+#dummyfooter .dropdown-menu{width: 100% !important;}
+#dummyfooter ul{color: black !important;}
+/* menu page */
+.kfcmenu{
+    width: 80%;
+}
+.kfcmenu a{
+    color: black;
+}
+.list-group .scrollspy-link {
+    position: fixed;
+    top: 157px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 7px;
+}
+.list-group-item.active,
+.list-group-item:hover {
+    color: rgb(243, 59, 59);
+    background-color: unset;
+    border-color: rgb(243, 59, 59);
+    border-left: 5px solid rgb(243, 59, 59);
+}
+.kfcmenu .card{
+    margin-top: 23px;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.2);
+}
+.kfcmenu .card:hover{
+    transition: transform .3s;
+    transform: scale(.98);
+}
+.kfcmenu p{
+    font-size: small;
+    height: 30px;
+}
+.kfcmenu h5{height: 38px;}
+
+/* menu for mobile style */
+
+
+/* menu for mobile style ends */
+
+  
+/* login page */
+.login{
+    width: 30%;
+    margin-top: 100px;
+}
+.details{text-align: start;}

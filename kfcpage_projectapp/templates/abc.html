@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>This is {{my_name}}</h1>
+    {%with new_name='username2'%}
+    <h1>This is {{new_name}}</h1>
+    {%endwith%}
+    {% with var1=a var2=a %}
+    {%if var1 is var2 %}
+    <p>True</p>
+    {% else %}
+    <p>False</p> 
+    {%endif%}
+    {% endwith %}
+    
+</body>
+</html>
